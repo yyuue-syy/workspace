@@ -1,0 +1,28 @@
+# string
+title = "test string title"
+
+# bool (note: 小写)
+debug = true
+verbose = false
+
+# num
+port = 8080
+timeout = 30.5
+
+# array
+array1 = ["string1", "string2"]
+array2 = [10, 20, 30]
+
+# map
+[map1]
+item1 = "localhost"
+item2 = 5432
+item3 = true
+
+[map1.http]
+port = 8080
+cors = true
+
+[map1.https]
+port = 443
+cert = "/path/to/cert.pem"
