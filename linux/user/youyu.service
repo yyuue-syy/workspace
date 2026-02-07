@@ -1,0 +1,26 @@
+[Unit]
+Description=youyu test app
+After=network.target multi-user.target
+Requires=network.target
+
+[Service]
+User=root
+Group=root
+
+ExecStart=/usr/bin/youyu
+
+Restart=always
+RestartSec=5
+
+# output log to journal
+StandardOutput=journal+console
+StandardError=journal+console
+
+WorkingDirectory=/usr/local/netlink
+
+Nice=0
+
+LimitNOFILE=4096
+
+[Install]
+WantedBy=multi-user.target
