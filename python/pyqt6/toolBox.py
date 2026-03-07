@@ -57,83 +57,83 @@ from uartTool import *
 from socketTool import *
 
 class cssPtn(QPushButton):
-	def __init__(self, title, parent=None):
-		super().__init__(parent)
+    def __init__(self, title, parent=None):
+        super().__init__(parent)
 
-		self.setText(title)
-		#self.setMinimumHeight(40)
-		#self.setMinimumWidth(80)
-		self.setStyleSheet(css_btn_cancel)
-		self.setCheckable(True)
+        self.setText(title)
+        #self.setMinimumHeight(40)
+        #self.setMinimumWidth(80)
+        self.setStyleSheet(css_btn_cancel)
+        self.setCheckable(True)
 
-	def is_checked(self):
-		return self.isChecked()
+    def is_checked(self):
+        return self.isChecked()
 
 class toolBoxEnterWidget(QWidget):
-	def __init__(self):
-		super().__init__()
+    def __init__(self):
+        super().__init__()
 
-		self.toolNames = {
-			'test-QPushButton': { 'ptn': None, 'window': None },
-			'test-QLineEdit'  : { 'ptn': None, 'window': None },
-			'test-tool'       : { 'ptn': None, 'window': None },
-			'uart-tool'       : { 'ptn': None, 'window': None },
-			'socket-tool'     : { 'ptn': None, 'window': None },
-		}
+        self.toolNames = {
+            'test-QPushButton': { 'ptn': None, 'window': None },
+            'test-QLineEdit'  : { 'ptn': None, 'window': None },
+            'test-tool'       : { 'ptn': None, 'window': None },
+            'uart-tool'       : { 'ptn': None, 'window': None },
+            'socket-tool'     : { 'ptn': None, 'window': None },
+        }
 
-		self.uiInit()
+        self.uiInit()
 
-	def uiInit(self):
-		self.setGeometry(1000, 600, 200, 250)
+    def uiInit(self):
+        self.setGeometry(1000, 600, 200, 250)
 
-		self.gridLayoutInit()
-		self.toolWindowInit()
-		self.toolBtnInit()
+        self.gridLayoutInit()
+        self.toolWindowInit()
+        self.toolBtnInit()
 
-	def gridLayoutInit(self):
-		self.gridLayout = QGridLayout(self)
+    def gridLayoutInit(self):
+        self.gridLayout = QGridLayout(self)
 
-		self.gridLayoutSpacing = len(self.toolNames)
-		self.gridLayout.setSpacing(self.gridLayoutSpacing)
-		for i in range(self.gridLayoutSpacing):
-			self.gridLayout.setColumnStretch(i, 1)
-			self.gridLayout.setRowStretch(i, 1)
+        self.gridLayoutSpacing = len(self.toolNames)
+        self.gridLayout.setSpacing(self.gridLayoutSpacing)
+        for i in range(self.gridLayoutSpacing):
+            self.gridLayout.setColumnStretch(i, 1)
+            self.gridLayout.setRowStretch(i, 1)
 
-	def toolBtnClicked(self):
-		sender = self.sender()
-		toolName = sender.text()
-		print(toolName)
+    def toolBtnClicked(self):
+        sender = self.sender()
+        toolName = sender.text()
+        print(toolName)
 
-		if self.toolNames[toolName]['window'] != None:
-			self.hide()
-			self.toolNames[toolName]['window'].show()
+        if self.toolNames[toolName]['window'] != None:
+            self.hide()
+            self.toolNames[toolName]['window'].show()
 
-	def toolWindowInit(self):
-		for toolName in self.toolNames:
-			if toolName == 'uart-tool':
-				self.toolNames[toolName]['window'] = uartTool(self)
-			elif toolName == 'socket-tool':
-				self.toolNames[toolName]['window'] = socketTool(self)
-			elif toolName == 'test-QPushButton':
-				self.toolNames[toolName]['window'] = testQpushButton(self)
-			elif toolName == 'test-QLineEdit':
-				self.toolNames[toolName]['window'] = testQLineEdit(self)
+    def toolWindowInit(self):
+        for toolName in self.toolNames:
+            if toolName == 'uart-tool':
+                self.toolNames[toolName]['window'] = uartTool(self)
+            elif toolName == 'socket-tool':
+                self.toolNames[toolName]['window'] = socketTool(self)
+            elif toolName == 'test-QPushButton':
+                self.toolNames[toolName]['window'] = testQpushButton(self)
+            elif toolName == 'test-QLineEdit':
+                self.toolNames[toolName]['window'] = testQLineEdit(self)
 
-	def toolBtnInit(self):
-		for toolName in self.toolNames.keys():
-			ptn = cssPtn(toolName)
-			ptn.clicked.connect(self.toolBtnClicked)
-			self.toolNames[toolName]['ptn'] = ptn
+    def toolBtnInit(self):
+        for toolName in self.toolNames.keys():
+            ptn = cssPtn(toolName)
+            ptn.clicked.connect(self.toolBtnClicked)
+            self.toolNames[toolName]['ptn'] = ptn
 
-		index = 0
-		for toolName, info in self.toolNames.items():
-			self.gridLayout.addWidget(info['ptn'], index, 0, 1, self.gridLayoutSpacing)
-			index += 1
+        index = 0
+        for toolName, info in self.toolNames.items():
+            self.gridLayout.addWidget(info['ptn'], index, 0, 1, self.gridLayoutSpacing)
+            index += 1
 
 if __name__ == "__main__":
-	app = QApplication(sys.argv)
-	app.setStyle('Fusion')
+    app = QApplication(sys.argv)
+    app.setStyle('Fusion')
 
-	window = toolBoxEnterWidget()
-	window.show()
-	sys.exit(app.exec())
+    window = toolBoxEnterWidget()
+    window.show()
+    sys.exit(app.exec())

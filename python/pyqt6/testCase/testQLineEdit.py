@@ -48,24 +48,24 @@ from PyQt6.QtWidgets import QFontDialog
 from PyQt6.QtWidgets import QColorDialog
 
 class testQLineEdit(QMainWindow):
-	def __init__(self, upWindow:QWidget=None):
-		super().__init__()
+    def __init__(self, upWindow:QWidget=None):
+        super().__init__()
 
-		self.upWindow = upWindow
+        self.upWindow = upWindow
 
-		self.uiInit()
+        self.uiInit()
 
-	def uiCentralWidgetInit(self):
-		self.centralWidget = QWidget()
-		self.setCentralWidget(self.centralWidget)
-		self.gridLayout = QGridLayout(self.centralWidget)
+    def uiCentralWidgetInit(self):
+        self.centralWidget = QWidget()
+        self.setCentralWidget(self.centralWidget)
+        self.gridLayout = QGridLayout(self.centralWidget)
 
-	def uiInit(self):
-		self.uiCentralWidgetInit()
+    def uiInit(self):
+        self.uiCentralWidgetInit()
 
-	def closeEvent(self, event):
-		print('uart tool close')
-		if self.upWindow != None:
-			self.upWindow.show()
+    def closeEvent(self, event):
+        print('uart tool close')
+        if self.upWindow != None:
+            self.upWindow.show()
 
-		return super().closeEvent(event)
+        return super().closeEvent(event)

@@ -15,14 +15,18 @@ array2 = [10, 20, 30]
 
 # map
 [map1]
-item1 = "localhost"
-item2 = 5432
+item1 = "map1 string"
+item2 = 1
 item3 = true
 
-[map1.http]
-port = 8080
-cors = true
+[map1.sub1]
+item1 = "map1 sub1 string"
+item2 = 11
+item3 = true
 
-[map1.https]
-port = 443
-cert = "/path/to/cert.pem"
+[map1.sub2]
+item1 = "map1 sub2 string"
+item2 = 21
+item3 = true
+
+[serial]
