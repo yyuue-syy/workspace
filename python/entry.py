@@ -2,7 +2,7 @@ import os
 import re
 import sys
 
-from tools.log.log import Logger
+from tools.log.log import YueLogger
 from tools.shell.shell import run_shell, shell
 
 from tools.config.ini_parser import IniConfig
@@ -10,7 +10,7 @@ from tools.config.toml_parser import TomlParser
 
 THIS_FILE_NAME = os.path.basename(__file__).split('.')[0]
 
-logger = Logger(name=THIS_FILE_NAME, to_console=True).get_logger()
+logger = YueLogger(name=THIS_FILE_NAME, to_console=True).get_logger()
 
 class Entry():
     def __init__(self):

@@ -6,7 +6,7 @@ import subprocess
 
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..'))
 
-from tools.log.log import Logger
+from tools.log.log import YueLogger
 
 def run_shell(cmd: str, cwd: str = None, timeout: int = 3, logger = None) -> tuple[str, str]:
 
@@ -35,7 +35,7 @@ if __name__ == "__main__":
 
     pdb.set_trace()
 
-    logger = Logger(name='shell_test', to_console=True).get_logger()
+    logger = YueLogger(name='shell_test', to_console=True).get_logger()
 
     logger.info(shell('ipconfig'))
     logger.info(shell('date'))

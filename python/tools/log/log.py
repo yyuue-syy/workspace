@@ -4,25 +4,37 @@ import time
 import logging
 import datetime
 
-from logging import Logger
 from logging.handlers import TimedRotatingFileHandler
 from typing import Optional
 
 THIS_TIME = datetime.datetime.now().strftime('%Y_%m%d_%H%M%S')
-DEFAULT_LOG_NAME = 'app.log'
-DEFAULT_LOG_DIR = 'output'
+
+"""
+RootLogger 是 logging 中所有 Logger 的最终父级, 它没有名字(name 属性为空字符串 ''), 是整个 Logger 层级体系的根节点。
+当通过 logging.getLogger(name) 创建任意 Logger 时:
+    - 如果 name 是空字符串，返回的就是 RootLogger 实例;
+    - 如果 name 是非空字符串（比如 'app'、'app.db'），返回的是普通 Logger 实例，且这个实例会隐式继承 RootLogger 的配置。
+
+Logger 的继承关系是基于 '.' 分隔名称的, 如：
+    - logging.getLogger('app') 的父级是 RootLogger;
+    - logging.getLogger('app.db') 的父级是 logging.getLogger('app'), 最终父级是 RootLogger。
+
+继承的核心作用：如果一个普通 Logger 没有设置 Handler / Level 等配置，它会向上委托给父级 Logger, 直到 RootLogger 处理日志。
+"""
 
 class YueLogger():
-    def __init__(self, name=None, dir:str=None,
-            level=logging.INFO,
-            to_file=True, to_console=False):
+    def __init__(self, name: str = None, dir: str = None,level = logging.INFO,
+                            to_file: bool = True, to_console: bool = False):
 
-        self.dir = dir if dir else DEFAULT_LOG_DIR
-        self.name = name if name else DEFAULT_LOG_NAME
-        self.fmt = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        self.dir        = dir if dir is not None else 'output/log'
+        self.name       = name if name is not None else 'default'
+        self.to_file    = to_file
+        self.to_console = to_console
 
-        self.fh = None
-        self.sh = None
+        self.fmt  = logging.Formatter('%(asctime)s %(levelname)s %(filename)15s%(funcName)15s: %(message)s')
+
+        self.__fh = None
+        self.__sh = None
 
         self.dir = os.path.join(os.getcwd(), self.dir).replace('\\', '/') \
             if os.path.isabs(self.dir) is False else self.dir
@@ -37,36 +49,46 @@ class YueLogger():
         self.logger = logging.getLogger(name)
         self.logger.setLevel(level)
 
-        if to_file:
-            self.add_file_handler()
+        self.file_handler_init()
+        self.stream_handler_init()
 
-        if to_console:
-            self.add_stream_handler()
+    def file_handler_init(self):
+        if not self.to_file:
+            return
 
-    def add_file_handler(self):
-        if self.fh != None:
-            print('file handler already exists')
+        if self.__fh is not None:
             return
 
         if not os.path.exists(os.path.dirname(self.log_file)):
             os.makedirs(os.path.dirname(self.log_file))
 
-        self.fh = logging.FileHandler(self.log_file, encoding='utf-8')
-        self.fh.setLevel(self.log_level)
-        self.fh.setFormatter(self.fmt)
+        self.__fh = logging.FileHandler(self.log_file, encoding='utf-8')
+        self.__fh.setLevel(self.log_level)
+        self.__fh.setFormatter(self.fmt)
 
-        self.logger.addHandler(self.fh)
+        self.logger.addHandler(self.__fh)
 
-    def add_stream_handler(self):
-        if self.sh != None:
+    def stream_handler_init(self):
+        if not self.to_console:
+            return
+
+        if self.__sh is not None:
             print('stream handler already exists')
             return
 
-        self.sh = logging.StreamHandler()
-        self.sh.setLevel(self.log_level)
-        self.sh.setFormatter(self.fmt)
+        self.__sh = logging.StreamHandler()
+        self.__sh.setLevel(self.log_level)
+        self.__sh.setFormatter(self.fmt)
 
-        self.logger.addHandler(self.sh)
+        self.logger.addHandler(self.__sh)
 
     def get_logger(self):
         return self.logger
+
+if __name__ == "__main__":
+    logger1 = logging.getLogger()
+    logger2 = logging.getLogger('test')
+
+    logger1.info('111')
+    print(logger1.parent)
+    print(logger2.parent)

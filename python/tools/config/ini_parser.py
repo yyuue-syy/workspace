@@ -3,11 +3,11 @@ import sys
 import pdb
 import configparser
 
-from tools.log.log import Logger
+from tools.log.log import YueLogger
 
 THIS_FILE_NAME = os.path.basename(__file__).split('.')[0]
 
-logger = Logger(name=THIS_FILE_NAME, to_console=True).get_logger()
+logger = YueLogger(name=THIS_FILE_NAME, to_console=True).get_logger()
 
 class IniConfig:
     def __init__(self, file_path:str):
